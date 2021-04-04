@@ -1,0 +1,122 @@
+.home-entrance {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .circle1 {
+    position: absolute;
+    height: 16rem;
+    width: 16rem;
+    background: transparent;
+    border-radius: 50%;
+    border: 0.3rem solid rgba(255, 255, 255, 0.5);
+    border-left: 0.3rem solid transparent;
+    border-bottom: 0.3rem solid transparent;
+    @keyframes turnCircle1 {
+      0% {
+        transform: rotateZ(-45deg);
+      }
+
+      100% {
+        transform: rotateZ(315deg);
+      }
+    }
+    animation: turnCircle1 4s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .circle2 {
+    position: absolute;
+    height: 13rem;
+    width: 13rem;
+    background-color: transparent;
+    border: 0.3rem solid rgba(64, 169, 255, 0.5);
+    border-right: 0.3rem solid transparent;
+    border-top: 0.3rem solid transparent;
+    @keyframes turnCircle2 {
+      0% {
+        transform: rotateZ(135deg);
+      }
+      100% {
+        transform: rotateZ(495deg);
+      }
+    }
+    animation: turnCircle2 1.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .circle3 {
+    position: absolute;
+    height: 19rem;
+    width: 19rem;
+    background-color: transparent;
+    border: 0.3rem solid rgba(64, 169, 255, 0.9);
+    border-right: 0.3rem solid transparent;
+    border-top: 0.3rem solid transparent;
+    @keyframes turnCircle3 {
+      0% {
+        transform: rotateZ(495deg);
+      }
+      100% {
+        transform: rotateZ(135deg);
+      }
+    }
+    animation: turnCircle3 4s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .home-page-link {
+    display: block;
+    position: absolute;
+    transform: none;
+  }
+
+  .button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 10rem;
+    width: 10rem;
+    // border-radius: 29%;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    // background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 25px 45px rgb(0 0 0 / 10%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    // border-right: 2px solid rgba(255, 255, 255, 0.1);
+    // border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    p {
+      position: relative;
+      margin: 0;
+    }
+    p::before {
+      content: "";
+      position: absolute;
+      bottom: -0.5em;
+      width: 0em;
+      height: 3px;
+      background-color: rgba(255, 255, 255, 0.7);
+      transition: 0.5s;
+    }
+  }
+  .button:hover {
+    p::before {
+      width: 4em;
+    }
+  }
+}

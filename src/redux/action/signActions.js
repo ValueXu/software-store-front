@@ -3,13 +3,13 @@ export const type={
     SIGN_OUT:'SIGN_OUT'
 }
 
-export function signIn(paths){
+export function signIn(userInfo){
     return {
         type:type.SIGN_IN,
-        paths
+        userInfo
     }
 }
-export function signOut(paths){
+export function signOut(){
     return {
         type:type.SIGN_OUT
     }

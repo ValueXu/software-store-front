@@ -1155,7 +1155,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.1", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.4", "@babel/runtime@^7.11.1", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.1", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.4", "@babel/runtime@^7.11.1", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.5", "@babel/runtime@^7.5.5", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.2":
   version "7.13.10"
   resolved "https://registry.npm.taobao.org/@babel/runtime/download/@babel/runtime-7.13.10.tgz?cache=0&sync_timestamp=1615243284383&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fruntime%2Fdownload%2F%40babel%2Fruntime-7.13.10.tgz"
   integrity sha1-R9QqV7YJX0Ro2kQDiP262L6/DX0=
@@ -4360,6 +4360,14 @@ dom-converter@^0.2:
   integrity sha1-ZyGp2u4uKTaClVtq/kFncWJ7t2g=
   dependencies:
     utila "~0.4"
+
+dom-helpers@^5.0.1:
+  version "5.2.0"
+  resolved "https://registry.npm.taobao.org/dom-helpers/download/dom-helpers-5.2.0.tgz#57fd054c5f8f34c52a3eeffdb7e7e93cd357d95b"
+  integrity sha1-V/0FTF+PNMUqPu/9t+fpPNNX2Vs=
+  dependencies:
+    "@babel/runtime" "^7.8.7"
+    csstype "^3.0.2"
 
 dom-serializer@0:
   version "0.2.2"
@@ -9857,6 +9865,16 @@ react-scripts@4.0.3:
     workbox-webpack-plugin "5.1.4"
   optionalDependencies:
     fsevents "^2.1.3"
+
+react-transition-group@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.npm.taobao.org/react-transition-group/download/react-transition-group-4.4.1.tgz?cache=0&sync_timestamp=1588776719104&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Freact-transition-group%2Fdownload%2Freact-transition-group-4.4.1.tgz#63868f9325a38ea5ee9535d828327f85773345c9"
+  integrity sha1-Y4aPkyWjjqXulTXYKDJ/hXczRck=
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    dom-helpers "^5.0.1"
+    loose-envify "^1.4.0"
+    prop-types "^15.6.2"
 
 react@^17.0.1:
   version "17.0.1"

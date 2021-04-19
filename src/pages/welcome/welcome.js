@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import Footer from "../../components/footer/Footer";
 import {
   FcAlarmClock,
-  FcBiohazard,
+  // FcBiohazard,
   FcBriefcase,
   FcFeedback,
   FcFilmReel,
   FcHeadset,
   FcHighBattery,
+  FcHome,
   FcMultipleCameras,
   FcReadingEbook,
   FcShipped,
@@ -39,8 +40,9 @@ export default class Welcome extends React.Component {
         <div className="head">
           <div className="head-content">
             <div className="head-content-wrap" onWheel={this.onWheel}>
-              <Link to="#">
-                <FcBiohazard className="head-content-icon" />
+              <Link to="/">
+                {/* <FcBiohazard className="head-content-icon" /> */}
+                <FcHome className="head-content-icon" />
               </Link>
               <Link to="#">
                 <FcAlarmClock className="head-content-icon" />
@@ -77,7 +79,7 @@ export default class Welcome extends React.Component {
         </div>
         <div className="content-wrapper">
           <div className="content">
-            <HomeEntrance />
+            {this.props.children ? this.props.children : <HomeEntrance />}
           </div>
         </div>
         <div className="footer-wrapper">

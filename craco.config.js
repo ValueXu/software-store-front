@@ -4,9 +4,14 @@ const CracoLessPlugin = require("craco-less");
 // const webpack = require("webpack");
 const WebpackBar = require("webpackbar");
 
+const MomentLocalesPlugin = require("moment-locales-webpack-plugin");
+
 module.exports = {
   webpack: {
-    plugins: [new WebpackBar()],
+    plugins: [
+      new WebpackBar(),
+      new MomentLocalesPlugin({ localesToKeep: ["zh-CN", "es-us"] }),
+    ],
   },
   babel: {
     plugins: [

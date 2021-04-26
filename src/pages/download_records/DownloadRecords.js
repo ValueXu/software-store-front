@@ -1,4 +1,5 @@
 import { Table } from "antd";
+import moment from "moment";
 import React, { Component } from "react";
 
 import "./DownloadRecords.less";
@@ -9,25 +10,25 @@ const result = {
       id: "01",
       software_id: "01",
       name: "GTA V",
-      time: `${new Date()}`,
+      time: `1619425636567`,
     },
     {
       id: "02",
       software_id: "01",
       name: "GTA V",
-      time: `${new Date()}`,
+      time: `1613425668834`,
     },
     {
       id: "03",
       software_id: "02",
       name: "二号软件",
-      time: `${new Date()}`,
+      time: `1617424673584`,
     },
     {
       id: "04",
       software_id: "02",
       name: "二号软件",
-      time: `${new Date()}`,
+      time: `1614325579584`,
     },
   ],
 };
@@ -40,29 +41,32 @@ export default class DownloadRecords extends Component {
   }
 
   columns = [
-    // {
-    //   title: "编号",
-    //   dataindex: "id",
-    //   key: "id",
-    // },
     {
       title: "软件名称",
-      dataindex: "name",
+      dataIndex: "name",
       key: "name",
-      render: (name) => {
-        return <span>{name}</span>;
+      defaultSorterOrder: "descend",
+      sorter: (a, b) => {
+        return a.name.localeCompare(b.name);
       },
     },
     {
       title: "下载时间",
-      dataindex: "time",
+      dataIndex: "time",
       key: "time",
+      render: (time) => {
+        return <div>{moment(parseInt(time)).format("lll")}</div>;
+      },
+      defaultSorterOrder: "descend",
+      sorter: (a, b) => {
+        return parseInt(a.time) - parseInt(b.time);
+      },
     },
   ];
 
   componentDidMount() {
     let datasource = result.list.map((item, index) => {
-      return { ...item, key: index };
+      return { ...item, key: index.toString() };
     });
     this.setState({
       datasource,

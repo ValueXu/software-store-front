@@ -19,29 +19,37 @@ class Guilder extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    const locationToSelectedKey = () => {
+    const _this = this;
+    async function locationToSelectedKey() {
       let selectedKeys = [window.location.pathname];
-      if (this.state.selectedKeys[0] !== selectedKeys[0]) {
-        this.setState({
-          selectedKeys,
-        });
+      if (_this.state.selectedKeys[0] !== selectedKeys[0]) {
         let title = "";
         let content = "";
-        for (let i = 0; i < MenuConfig.length; i++) {
-          let item = MenuConfig[i];
-          if (item.path === selectedKeys[0]) {
-            title = item.title;
-            content = item.content;
+        const getInfo = (MenuConfig, keyPath) => {
+          for (let i = 0; i < MenuConfig.length; i++) {
+            let item = MenuConfig[i];
+            if (item.path === keyPath) {
+              title = item.title;
+              content = item.content;
+              break;
+            } else if (item.child !== undefined && item.child.length !== 0) {
+              getInfo(item.child, keyPath);
+            }
           }
-        }
+        };
+        getInfo(MenuConfig, selectedKeys[0]);
+        _this.setState({
+          selectedKeys,
+        });
         dispatch(menuChange({ title, content }));
       }
-    };
-    this.inteval = setInterval(locationToSelectedKey, 500);
+    }
+    // this.inteval = setInterval(locationToSelectedKey, 500);
+    locationToSelectedKey();
   }
 
   componentWillUnmount() {
-    clearInterval(this.inteval);
+    // clearInterval(this.inteval);
   }
 
   menus = [];

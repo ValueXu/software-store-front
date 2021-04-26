@@ -13,6 +13,14 @@ import HomePage from "./pages/homepage/homepage";
 import NoMatch from "./components/404/404";
 import Wrapper from "./components/wrapper/Wrapper";
 import { connect } from "react-redux";
+import Games from "./pages/softwares/games/Games";
+import Softwares from "./pages/softwares/softwares/Softwares";
+import Others from "./pages/softwares/others/Others";
+import DownloadRecords from "./pages/download_records/DownloadRecords";
+import Scored from "./pages/user/scored/Scored";
+import UserMessage from "./pages/user/message/UserMessage";
+import SoftwareAdmin from "./pages/software-admin/SoftwareAdmin";
+import UserAdmin from "./pages/userAdmin/UserAdmin";
 // import App from "./App";
 
 class MyRouter extends React.Component {
@@ -22,23 +30,23 @@ class MyRouter extends React.Component {
       paths: [
         {
           path: "/downloadRecords",
-          component: HomePage,
+          component: DownloadRecords,
         },
         {
           path: "/softwareAdmin",
-          component: HomePage,
+          component: SoftwareAdmin,
         },
         {
           path: "/userAdmin",
-          component: HomePage,
+          component: UserAdmin,
         },
         {
           path: "/userCenter/message",
-          component: HomePage,
+          component: UserMessage,
         },
         {
           path: "/userCenter/scored",
-          component: HomePage,
+          component: Scored,
         },
       ],
     },
@@ -87,10 +95,22 @@ class MyRouter extends React.Component {
                   <Wrapper>
                     <Switch>
                       <Route exact path="/homepage" component={HomePage} />
-                      <Route exact path="/softwares">
-                        <Route exact path="/softwares/game"></Route>
-                        <Route exact path="/softwares/software"></Route>
-                        <Route exact path="/softwares/others"></Route>
+                      <Route path="/softwares">
+                        <Route
+                          exact
+                          path="/softwares/games"
+                          component={Games}
+                        />
+                        <Route
+                          exact
+                          path="/softwares/software"
+                          component={Softwares}
+                        ></Route>
+                        <Route
+                          exact
+                          path="/softwares/others"
+                          component={Others}
+                        ></Route>
                       </Route>
                       {this.renderSplitedRoute(this.props.userInfo.type)}
                       <NoMatch />

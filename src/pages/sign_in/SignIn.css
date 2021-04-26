@@ -1,0 +1,20 @@
+.sign-in-enter {
+  opacity: 0;
+}
+.sign-in-enter-active {
+  opacity: 1;
+  transition: opacity 2000ms;
+}
+.sign-in-enter-done {
+  opacity: 1;
+}
+.sign-in-exit {
+  opacity: 1;
+}
+.sign-in-exit-active {
+  opacity: 0;
+  transition: opacity 2000ms;
+}
+.sign-in-exit-done {
+  opacity: 0;
+}

@@ -6,9 +6,11 @@ import {
   FcManager,
   FcPodiumWithAudience,
   FcSettings,
-  FcSteam,
+  // FcSteam,
   FcTemplate,
 } from "react-icons/fc";
+
+import { IoGameController } from 'react-icons/io5'
 
 import { AppstoreFilled, UserOutlined } from "@ant-design/icons";
 
@@ -32,7 +34,7 @@ const MenuConfig = [
         title: "游戏",
         content: "MOBA、角色扮演、动作、冒险、策略，应有尽有",
         path: "/softwares/games",
-        icon: <FcSteam />,
+        icon: <IoGameController />,
         userType: [0, 1, 2],
       },
       {

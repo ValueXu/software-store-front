@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 
-export default class UserAdmin extends Component {
+import './SoftwareDetail.less'
+
+export default class SoftwareDetail extends Component {
     render() {
         return (
-            <div className='userAdmin'>
+            <div>
                 
             </div>
         )

@@ -79,6 +79,7 @@ export default class DownloadRecords extends Component {
           className="download-records-table"
           columns={this.columns}
           dataSource={this.state.datasource}
+          style={{ borderWidth: "1px", borderColor: "rgba(0,0,0,0.7)" }}
         />
       </div>
     );

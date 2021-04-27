@@ -28,7 +28,7 @@ class Guilder extends Component {
         const getInfo = (MenuConfig, keyPath) => {
           for (let i = 0; i < MenuConfig.length; i++) {
             let item = MenuConfig[i];
-            if (item.path === keyPath) {
+            if (keyPath.includes(item.path)) {
               title = item.title;
               content = item.content;
               break;
@@ -44,12 +44,12 @@ class Guilder extends Component {
         dispatch(menuChange({ title, content }));
       }
     }
-    // this.inteval = setInterval(locationToSelectedKey, 500);
-    locationToSelectedKey();
+    this.inteval = setInterval(locationToSelectedKey, 500);
+    // locationToSelectedKey();
   }
 
   componentWillUnmount() {
-    // clearInterval(this.inteval);
+    clearInterval(this.inteval);
   }
 
   menus = [];

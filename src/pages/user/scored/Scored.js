@@ -1,4 +1,4 @@
-import { message, Popconfirm, Rate, Space, Table } from "antd";
+import { message, Popconfirm, Rate, Space, Table, Tooltip } from "antd";
 import React, { Component } from "react";
 
 import "./Scored.less";
@@ -9,7 +9,7 @@ const result = {
       id: "02",
       software_id: "01",
       name: "GTA V",
-      comment: "太好了，敏感肌也能用",
+      comment: "太好了，敏感肌也能用，hhhhhhhhhhhhh",
       score: "4",
     },
     {
@@ -89,6 +89,19 @@ export default class Scored extends Component {
       title: "评论",
       dataIndex: "comment",
       key: "comment",
+      render: (comment) => {
+        const cutComment = (comment) => {
+          if (comment.length > 10) {
+            return (
+              <Tooltip title={comment}>
+                <span>{comment.slice(0, 9) + "......"}</span>
+              </Tooltip>
+            );
+          }
+          return comment;
+        };
+        return <Space>{cutComment(comment)}</Space>;
+      },
     },
     {
       title: "分值",

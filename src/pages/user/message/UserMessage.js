@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { Descriptions, Avatar } from "antd";
+import { Descriptions, Avatar, Tag } from "antd";
 
 import { UserOutlined } from "@ant-design/icons";
 
@@ -27,7 +27,7 @@ class UserMessage extends Component {
           </Descriptions.Item>
           <Descriptions.Item label="邮箱">{userInfo.email}</Descriptions.Item>
           <Descriptions.Item label="用户类型">
-            {userType(userInfo.type)}
+            {<Tag color='magenta'>{userType(userInfo.type)}</Tag>}
           </Descriptions.Item>
         </Descriptions>
       </div>

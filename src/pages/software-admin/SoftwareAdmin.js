@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { Button, Card, message, Popconfirm, Space, Table } from "antd";
+import { Button, Card, message, Popconfirm, Space, Table, Tag } from "antd";
 
 import "./SoftwareAdmin.less";
 import Modal from "antd/lib/modal/Modal";
@@ -90,29 +90,33 @@ export default class SoftwareAdmin extends Component {
       title: "软件名",
       dataIndex: "name",
       key: "name",
-      width:'20%'
+      width: "20%",
     },
     {
       title: "类别",
       dataIndex: "type",
       key: "type",
-      width:'20%',
+      width: "20%",
       render: (type) => {
         let text = "未知";
+        let color = "magenta";
         switch (type) {
           case 0: {
             text = "游戏";
+            color = "magenta";
             break;
           }
           case 1: {
             text = "软件";
+            color = "cyan";
             break;
           }
           default: {
             text = "其他";
+            color = "geekblue";
           }
         }
-        return <p>{text}</p>;
+        return <Tag color={color}>{text}</Tag>;
       },
     },
     {
@@ -128,7 +132,8 @@ export default class SoftwareAdmin extends Component {
               }}
             >
               更新信息
-            </a>|
+            </a>
+            |
             <Popconfirm
               title="确认删除这一项吗？"
               onConfirm={() => {

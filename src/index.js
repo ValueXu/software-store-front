@@ -17,13 +17,13 @@ import MyRouter from "./router";
 moment.locale("zh-cn");
 
 ReactDOM.render(
-  <React.StrictMode>
+  <>
     <ConfigProvider locale={zhCN}>
       <Provider store={store}>
         <MyRouter />
       </Provider>
     </ConfigProvider>
-  </React.StrictMode>,
+  </>,
   document.getElementById("root")
 );
 

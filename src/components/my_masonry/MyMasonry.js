@@ -1,4 +1,7 @@
+import { Rate, Tooltip } from "antd";
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   AutoSizer,
   Masonry,
@@ -8,10 +11,11 @@ import {
 } from "react-virtualized";
 
 import ImageMeasurer from "react-virtualized-image-measurer";
+import { download } from "../../ajax/myAxios";
 
 import "./MyMasonry.less";
 
-export default class MyMasonry extends Component {
+class MyMasonry extends Component {
   state = {
     columnWidth: 200,
     // 列之间的间隔
@@ -77,6 +81,11 @@ export default class MyMasonry extends Component {
             const { item, size } = itemsWithSizes[index];
             const { columnWidth } = this.state;
             const height = columnWidth * (size.height / size.width);
+            const onDownload = (e) => {
+              // e.preventDefault();
+              const username = this.props.userInfo.username;
+              download(item.downloadUrl, item.id, username);
+            };
             return (
               <CellMeasurer
                 cache={this.cache}
@@ -98,22 +107,50 @@ export default class MyMasonry extends Component {
                       height,
                     }}
                   />
-                  <div>软件名：{item.name}</div>
-                  <div>描述：{item.description}</div>
-                  <span>
-                    <a
-                      href={"/detail/?id=" + item.id}
+                  <div className="cell-item">
+                    软件名：
+                    {item.name.length > 10 ? (
+                      <Tooltip title={item.name}>
+                        {item.name.slice(0, 10) + "......"}
+                      </Tooltip>
+                    ) : (
+                      item.name
+                    )}
+                  </div>
+                  <div className="cell-item">
+                    评分：
+                    <Rate onChange={() => {}} value={item.score} />
+                  </div>
+                  <div className="cell-item">
+                    描述：
+                    {item.description.length > 10
+                      ? item.description.slice(0, 10) + "......"
+                      : item.description}
+                  </div>
+
+                  <div className="cell-item">
+                    <Link
+                      to={"/detail/" + item.id}
                       style={{ marginRight: "1rem" }}
                     >
                       查看详情
-                    </a>
-                    <a href={item.downloadUrl}>立即下载</a>
-                  </span>
+                    </Link>
+                    <Link to={"/recommend/" + item.id} onClick={onDownload}>
+                      立即下载
+                    </Link>
+                    {/* <a
+                      href={item.downloadUrl}
+                      rel="noreferrer"
+                      target="_blank"
+                      onClick={onDownload}
+                    >
+                      立即下载
+                    </a> */}
+                  </div>
                 </div>
               </CellMeasurer>
             );
           };
-
           return (
             <Masonry
               className="masonry"
@@ -169,3 +206,9 @@ export default class MyMasonry extends Component {
     );
   }
 }
+
+const stateToProps = (state) => {
+  return { userInfo: state.signChangeReducer.userInfo };
+};
+
+export default connect(stateToProps)(MyMasonry);

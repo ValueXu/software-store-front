@@ -94,6 +94,7 @@ class Guilder extends Component {
       return null;
     });
   };
+
   render() {
     const collapsed =
       this.props.collapsed === undefined ? false : this.props.collapsed;
@@ -108,7 +109,7 @@ class Guilder extends Component {
           onSelect={this.onSelect}
           selectedKeys={this.state.selectedKeys}
         >
-          {this.menus}
+          {this.menuRender()}
         </Menu>
       </>
     );

@@ -26,7 +26,7 @@ export default class Editor extends Component {
         message.success({ content: "评论成功" });
         this.formRef.current.resetFields();
         this.props.request(this.props.software_id);
-      } else {
+      } else if(!res.msg) {
         notification.info({
           message: "评论失败",
           description: `${res.msg}`,

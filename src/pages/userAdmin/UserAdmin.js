@@ -120,7 +120,7 @@ export default class UserAdmin extends Component {
         this.setState({
           datasource,
         });
-      } else {
+      } else if(!res.msg) {
         notification.error({
           message: "错误",
           description: `${res.msg}`,
@@ -140,7 +140,7 @@ export default class UserAdmin extends Component {
       if (res.code === 1) {
         message.success({ content: "删除成功" });
         this.requestList();
-      } else {
+      } else if(!res.msg) {
         notification.error({
           message: "删除失败",
           description: `${res.msg}`,

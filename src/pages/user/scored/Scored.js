@@ -49,7 +49,7 @@ class Scored extends Component {
         _this.setState({
           datasource,
         });
-      } else {
+      } else if(!res.msg) {
         notification.error({
           message: "请求打分列表错误",
           description: `${res.msg}`,
@@ -74,7 +74,7 @@ class Scored extends Component {
       if(res.code===1){
         message.success({content:'删除成功'})
         _this.requestList();
-      }else{
+      }else if(!res.msg){
         notification.error({
           message:'删除失败',
           description:`${res.msg}`

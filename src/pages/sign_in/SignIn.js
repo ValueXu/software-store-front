@@ -67,7 +67,7 @@ class SignInBasic extends React.Component {
           localStorage.setItem("userInfo", JSON.stringify(userInfo));
           const { dispatch } = this.props;
           dispatch(signIn(userInfo));
-        } else {
+        } else if(!res.msg) {
           message.error({
             content: `${res.msg}`,
           });

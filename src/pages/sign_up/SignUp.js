@@ -93,7 +93,7 @@ export default class SignUp extends React.Component {
           content: "注册成功",
         });
         this.next();
-      } else {
+      } else if(!res.msg) {
         message.error({
           content: `${res.msg}`,
         });

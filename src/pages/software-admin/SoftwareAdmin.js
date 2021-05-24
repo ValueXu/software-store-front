@@ -51,7 +51,7 @@ class SoftwareAdmin extends Component {
           return { ...item, key: index };
         });
         _this.setState({ datasource });
-      } else {
+      } else if(!res.msg) {
         notification.error({
           message: "错误",
           description: `${res.msg}`,
@@ -74,7 +74,7 @@ class SoftwareAdmin extends Component {
           content: "删除成功",
         });
         this.requestList();
-      } else {
+      } else if(!res.msg) {
         notification.error({
           message: "删除失败",
           description: `${res.msg}`,
@@ -135,7 +135,7 @@ class SoftwareAdmin extends Component {
             _this.isUpdateSubmite = false;
             _this.uploaderRef.current.resetFields();
             _this.requestList();
-          } else {
+          } else if(!res.msg) {
             notification.error({
               message: "上传失败",
               description: `${res.msg}`,

@@ -60,7 +60,7 @@ class DownloadRecords extends Component {
         _this.setState({
           datasource,
         });
-      } else {
+      } else if (!res.msg) {
         notification.error({
           message: "错误",
           description: `${res.msg}`,

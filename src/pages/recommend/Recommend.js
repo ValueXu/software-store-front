@@ -56,7 +56,7 @@ class Recommend extends Component {
           _this.setState({
             list,
           });
-        } else {
+        } else if(!res.msg) {
           message.info({
             content: `${res.msg}`,
           });

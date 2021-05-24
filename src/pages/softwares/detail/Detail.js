@@ -58,7 +58,7 @@ class Detail extends Component {
           detail: res.result,
           loading: false,
         });
-      } else {
+      } else if(!res.msg) {
         notification.error({
           message: "获取软件详情错误",
           description: `${res.msg}`,
@@ -77,7 +77,7 @@ class Detail extends Component {
         _this.setState({
           scores: res.result,
         });
-      } else {
+      } else if(!res.msg) {
         notification.error({
           message: "获取打分列表错误",
           description: `${res.msg}`,

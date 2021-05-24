@@ -122,7 +122,7 @@ export default class Softwares extends Component {
           _this.setState({
             list,
           });
-        } else {
+        } else if(!res.msg) {
           message.info({
             content: `${res.msg}`,
           });

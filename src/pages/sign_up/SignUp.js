@@ -7,6 +7,7 @@ import UserPass from "./contents/user-pass/UserPass";
 import Info from "./contents/info/Info";
 // import Email from "./contents/email/Email";
 import SignUpResult from "./contents/sign_up_result/SignUpResult";
+import { ajax } from "../../ajax/myAxios";
 
 const { Step } = Steps;
 
@@ -76,9 +77,27 @@ export default class SignUp extends React.Component {
   };
 
   submitSignUp = () => {
-    console.log("formValues", this.formValues);
-    message.success({
-      content: "注册成功",
+    let formValues = this.formValues;
+    let data = new FormData();
+    Object.keys(formValues).forEach((item) => {
+      data.append(`${item}`, formValues[item]);
+    });
+    const config = {
+      method: "POST",
+      data,
+      url: "/user/signUp",
+    };
+    ajax(config).then((res) => {
+      if (res.code === 1) {
+        message.success({
+          content: "注册成功",
+        });
+        this.next();
+      } else {
+        message.error({
+          content: `${res.msg}`,
+        });
+      }
     });
   };
 
@@ -97,10 +116,7 @@ export default class SignUp extends React.Component {
               <Button
                 className="button"
                 type="primary"
-                onClick={() => {
-                  this.submitSignUp();
-                  this.next();
-                }}
+                onClick={this.submitSignUp}
                 key="complete"
               >
                 完成

@@ -78,11 +78,10 @@ export default class Info extends Component {
             <Select
               placeholder="选择您的帐号类型"
               allowClear
-                onChange={this.onSelectChange}
+              onChange={this.onSelectChange}
             >
-              <Option value={0}>普通用户</Option>
-              <Option value={1}>开发人员</Option>
-              <Option value={2}>管理员</Option>
+              <Option value={3}>普通用户</Option>
+              <Option value={4}>开发人员</Option>
             </Select>
           </FormItem>
         </Form>

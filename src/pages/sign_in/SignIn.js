@@ -1,14 +1,18 @@
 import { Button, Form, Input, message } from "antd";
 import React from "react";
-import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
+
+import { ajax } from "../../ajax/myAxios";
+import { signIn } from "../../redux/action/signActions";
 
 import "./SignIn.less";
 // import "./SignIn.css";
 
 const FormItem = Form.Item;
 
-export default class SignIn extends React.Component {
+class SignInBasic extends React.Component {
   state = {
     toShow: true,
   };
@@ -29,15 +33,47 @@ export default class SignIn extends React.Component {
       span: 16,
     },
   };
+  changePath = (path) => {
+    this.props.history.push(path);
+  };
   onFinish = (values) => {
-    message
-      .success({
-        content: `登陆成功，即将进入首页`,
+    const formData = new FormData();
+    Object.keys(values).forEach((item) => {
+      formData.append(item, values[item]);
+    });
+    const config = {
+      url: "/user/signIn",
+      method: "POST",
+      data: formData,
+      // params:values,
+      headers: {
+        // ...formData.getHeaders(),
+      },
+    };
+    ajax(config)
+      .then((res) => {
+        if (res.code === 0) {
+          localStorage.setItem("token", res.result.token);
+          message
+            .success({
+              content: `登陆成功，即将进入首页`,
+            })
+            .then(() => {
+              // window.location.pathname = "/homepage";
+
+              this.changePath("/homepage");
+            });
+          let userInfo = res.result.userInfo;
+          localStorage.setItem("userInfo", JSON.stringify(userInfo));
+          const { dispatch } = this.props;
+          dispatch(signIn(userInfo));
+        } else {
+          message.error({
+            content: `${res.msg}`,
+          });
+        }
       })
-      .then(() => {
-        window.location.pathname = "/homepage";
-      });
-    console.log("SignIn Successfully!", values);
+      .catch((e) => {});
   };
   changeToShow = () => {
     this.setState({
@@ -63,7 +99,11 @@ export default class SignIn extends React.Component {
                   },
                 ]}
               >
-                <Input className='sign-in-input' type="text" placeholder="在这输入您的用户名称"></Input>
+                <Input
+                  className="sign-in-input"
+                  type="text"
+                  placeholder="在这输入您的用户名称"
+                ></Input>
               </FormItem>
               <FormItem
                 label="密码"
@@ -75,7 +115,11 @@ export default class SignIn extends React.Component {
                   },
                 ]}
               >
-                <Input className='sign-in-input' type="password" placeholder="在这输入您的密码" />
+                <Input
+                  className="sign-in-input"
+                  type="password"
+                  placeholder="在这输入您的密码"
+                />
               </FormItem>
               <FormItem
               // {...this.tailLayout}
@@ -95,3 +139,9 @@ export default class SignIn extends React.Component {
     );
   }
 }
+
+let SignInWithRouter = withRouter(SignInBasic);
+
+const SignIn = connect()(SignInWithRouter);
+
+export default SignIn;

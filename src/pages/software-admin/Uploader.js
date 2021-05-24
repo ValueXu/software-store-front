@@ -48,21 +48,21 @@ export default class Uploader extends Component {
             ]}
           >
             <Select placeholder="请选择软件类型">
-              <Option value="0">游戏</Option>
-              <Option value="1">软件</Option>
-              <Option value="2">其他</Option>
+              <Option value={1}>游戏</Option>
+              <Option value={2}>软件</Option>
+              <Option value={3}>其他</Option>
             </Select>
           </FormItem>
-          <FormItem name="imgUrl" label="图片">
-            <Input type="text" disabled />
+          <FormItem name="img_url" label="图片链接">
+            <Input type="text" />
           </FormItem>
           <FormItem
-            name="downloadUrl"
+            name="download_url"
             label="文件"
             rules={[
               {
                 required: true,
-                message: "请上传您的软件源文件",
+                message: "请上传您的软件的链接",
               },
             ]}
           >

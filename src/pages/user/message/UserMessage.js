@@ -1,14 +1,23 @@
 import React, { Component } from "react";
 
-import { Descriptions, Avatar, Tag } from "antd";
+import { Descriptions, Avatar, Tag, Button } from "antd";
 
 import { UserOutlined } from "@ant-design/icons";
 
 import "./UserMessage.less";
 import { connect } from "react-redux";
 import { userType } from "../../../utils/typeMap";
+import { Link } from "react-router-dom";
+import { clearToken } from "../../../utils/signOut";
+import { signOut } from "../../../redux/action/signActions";
 
 class UserMessage extends Component {
+  onClick = () => {
+    const { dispatch } = this.props;
+    dispatch(signOut());
+    clearToken();
+  };
+
   render() {
     const userInfo = this.props.userInfo;
     return (
@@ -27,7 +36,14 @@ class UserMessage extends Component {
           </Descriptions.Item>
           <Descriptions.Item label="邮箱">{userInfo.email}</Descriptions.Item>
           <Descriptions.Item label="用户类型">
-            {<Tag color='magenta'>{userType(userInfo.type)}</Tag>}
+            {<Tag color="magenta">{userType(userInfo.type)}</Tag>}
+          </Descriptions.Item>
+          <Descriptions.Item label="注销登录">
+            {
+              <Link to={"/"} onClick={this.onClick}>
+                <Button type="primary">点此注销</Button>
+              </Link>
+            }
           </Descriptions.Item>
         </Descriptions>
       </div>

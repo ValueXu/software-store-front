@@ -1,8 +1,8 @@
 const initialState = {
   userInfo: {
     name: "游客",
-    username:'空',
-    type: 0,
+    username:'guest',
+    type: 1,
     paths: ["/welcome", "/signin", "/signup", "/homepage"],
     email:'xxxxxxx@xxx.xxx'
   },

@@ -1,42 +1,20 @@
-import { message, Popconfirm, Rate, Space, Table, Tooltip } from "antd";
+import {
+  message,
+  notification,
+  Popconfirm,
+  Rate,
+  Space,
+  Table,
+  Tooltip,
+} from "antd";
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { ajax } from "../../../ajax/myAxios";
 
 import "./Scored.less";
 
-const result = {
-  list: [
-    {
-      id: "02",
-      software_id: "01",
-      name: "GTA V",
-      comment: "太好了，敏感肌也能用，hhhhhhhhhhhhh",
-      score: "4",
-    },
-    {
-      id: "08",
-      software_id: "02",
-      name: "Visual Studio Code",
-      comment: "太好了，敏感肌也能用",
-      score: "4",
-    },
-    {
-      id: "10",
-      software_id: "03",
-      name: "砍杀",
-      comment: "太好了，敏感肌也能用",
-      score: "2",
-    },
-    {
-      id: "13",
-      software_id: "10",
-      name: "神机规则获取器",
-      comment: "太好了，敏感肌也能用",
-      score: "1",
-    },
-  ],
-};
-
-export default class Scored extends Component {
+class Scored extends Component {
   constructor() {
     super();
     this.state = { datasource: [] };
@@ -47,26 +25,62 @@ export default class Scored extends Component {
   }
 
   requestList = () => {
-    let datasource = result.list.map((item, index) => {
-      return {
-        ...item,
-        key: index,
-        id: parseInt(item.id),
-        score: parseInt(item.score),
-        software_id: parseInt(item.software_id),
-      };
-    });
-    this.setState({
-      datasource,
+    let _this = this;
+    const { userInfo } = this.props;
+    const username = userInfo.username;
+    const config = {
+      method: "GET",
+      url: "/scores/getAllByUsername",
+      params: {
+        username,
+      },
+    };
+    ajax(config).then((res) => {
+      if (res.code === 1) {
+        let datasource = res.result.map((item, index) => {
+          return {
+            ...item,
+            key: index,
+            id: parseInt(item.id),
+            score: parseInt(item.score),
+            software_id: parseInt(item.software_id),
+          };
+        });
+        _this.setState({
+          datasource,
+        });
+      } else {
+        notification.error({
+          message: "请求打分列表错误",
+          description: `${res.msg}`,
+        });
+      }
     });
   };
 
-  deleteScore = (id) => {
-    console.log("删除的打分的id是：", id);
-    message.success({
-      content: "删除成功",
-    });
-    this.requestList();
+  deleteScore = (software_id) => {
+    let _this=this;
+    const { userInfo } = this.props;
+    const username = userInfo.username;
+    const config = {
+      method: "GET",
+      url: "/scores/delete",
+      params: {
+        username,
+        software_id,
+      },
+    };
+    ajax(config).then(res=>{
+      if(res.code===1){
+        message.success({content:'删除成功'})
+        _this.requestList();
+      }else{
+        notification.error({
+          message:'删除失败',
+          description:`${res.msg}`
+        })
+      }
+    })
   };
 
   columns = [
@@ -131,18 +145,11 @@ export default class Scored extends Component {
       render: (record) => {
         return (
           <Space>
-            <a
-              href="./"
-              onClick={(e) => {
-                e.preventDefault();
-              }}
-            >
-              软件详情
-            </a>
+            <Link to={"/detail/" + record.software_id}>软件详情</Link>
             <Popconfirm
               title="确认删除该评论吗？"
               onConfirm={() => {
-                this.deleteScore(record.id);
+                this.deleteScore(record.software_id);
               }}
               okText="确认"
               cancelText="取消"
@@ -170,3 +177,11 @@ export default class Scored extends Component {
     );
   }
 }
+
+const stateToProps = (state) => {
+  return {
+    userInfo: state.signChangeReducer.userInfo,
+  };
+};
+
+export default connect(stateToProps)(Scored);

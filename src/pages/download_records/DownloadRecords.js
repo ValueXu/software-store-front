@@ -1,38 +1,12 @@
-import { Table } from "antd";
+import { notification, Table } from "antd";
 import moment from "moment";
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { ajax } from "../../ajax/myAxios";
 
 import "./DownloadRecords.less";
 
-const result = {
-  list: [
-    {
-      id: "01",
-      software_id: "01",
-      name: "GTA V",
-      time: `1619425636567`,
-    },
-    {
-      id: "02",
-      software_id: "01",
-      name: "GTA V",
-      time: `1613425668834`,
-    },
-    {
-      id: "03",
-      software_id: "02",
-      name: "二号软件",
-      time: `1617424673584`,
-    },
-    {
-      id: "04",
-      software_id: "02",
-      name: "二号软件",
-      time: `1614325579584`,
-    },
-  ],
-};
-export default class DownloadRecords extends Component {
+class DownloadRecords extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -65,13 +39,35 @@ export default class DownloadRecords extends Component {
   ];
 
   componentDidMount() {
-    let datasource = result.list.map((item, index) => {
-      return { ...item, key: index.toString() };
-    });
-    this.setState({
-      datasource,
-    });
+    this.requestRecord();
   }
+  requestRecord = () => {
+    const { userInfo } = this.props;
+    const username = userInfo.username;
+    const config = {
+      method: "GET",
+      url: "/record/getAllByUsername",
+      params: {
+        username,
+      },
+    };
+    let _this = this;
+    ajax(config).then((res) => {
+      if (res.code === 1) {
+        let datasource = res.result.map((item, index) => {
+          return { ...item, key: index.toString() };
+        });
+        _this.setState({
+          datasource,
+        });
+      } else {
+        notification.error({
+          message: "错误",
+          description: `${res.msg}`,
+        });
+      }
+    });
+  };
   render() {
     return (
       <div className="download-records">
@@ -85,3 +81,11 @@ export default class DownloadRecords extends Component {
     );
   }
 }
+
+const stateToProps = (state) => {
+  return {
+    userInfo: state.signChangeReducer.userInfo,
+  };
+};
+
+export default connect(stateToProps)(DownloadRecords);

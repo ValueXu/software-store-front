@@ -1,38 +1,31 @@
 import React, { Component } from "react";
 
-import { Button, Card, message, Popconfirm, Space, Table, Tag } from "antd";
+import {
+  Button,
+  Card,
+  message,
+  notification,
+  Popconfirm,
+  Space,
+  Table,
+  Tag,
+} from "antd";
 
 import "./SoftwareAdmin.less";
 import Modal from "antd/lib/modal/Modal";
 import Uploader from "./Uploader";
+import { connect } from "react-redux";
+import { ajax } from "../../ajax/myAxios";
 
-const result = {
-  list: [
-    {
-      id: "01",
-      name: "GTAV",
-      type: 0,
-    },
-    {
-      id: "02",
-      name: "P图",
-      type: 1,
-    },
-    {
-      id: "03",
-      name: "工具箱",
-      type: 2,
-    },
-  ],
-};
-
-export default class SoftwareAdmin extends Component {
+class SoftwareAdmin extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isModalVisible: false,
     };
     this.datasource = [];
+    this.isUpdateSubmite = false;
+    this.software_id = null;
   }
 
   componentDidMount() {
@@ -40,47 +33,115 @@ export default class SoftwareAdmin extends Component {
   }
 
   requestList = () => {
-    let datasource = result.list.map((item, index) => {
-      return { ...item, key: index };
+    const { userInfo } = this.props;
+    let url = "/software/getAllByAuthor";
+    let params = { username: userInfo.username };
+    if (userInfo.type === 2) {
+      url = "/software/getAllSoftware";
+    }
+    const config = {
+      method: "GET",
+      url,
+      params,
+    };
+    let _this = this;
+    ajax(config).then((res) => {
+      if (res.code === 1) {
+        let datasource = res.result.map((item, index) => {
+          return { ...item, key: index };
+        });
+        _this.setState({ datasource });
+      } else {
+        notification.error({
+          message: "错误",
+          description: `${res.msg}`,
+        });
+      }
     });
-    this.setState({ datasource });
   };
 
   deleteItem = (id) => {
     console.log("删除的软件id", id);
-    message.success({
-      content: "删除成功",
+    const config = {
+      url: "/software/deleteSoftware",
+      params: {
+        software_id: id,
+      },
+    };
+    ajax(config).then((res) => {
+      if (res.code === 1) {
+        message.success({
+          content: "删除成功",
+        });
+        this.requestList();
+      } else {
+        notification.error({
+          message: "删除失败",
+          description: `${res.msg}`,
+        });
+      }
     });
-    this.requestList();
+  };
+
+  onUpdate = (record) => {
+    this.isUpdateSubmite = true;
+    this.software_id = record.id;
+    this.uploaderRef.current.setFieldsValue({
+      ...record,
+      img_url: record.imgUrl,
+      download_url: record.downloadUrl,
+    });
+    this.setState({ isModalVisible: true });
   };
 
   uploaderRef = React.createRef();
 
   handleUploadForm = () => {
+    let _this = this;
     this.uploaderRef.current
       .validateFields()
       .then((values) => {
-        async function submit() {
-          console.log("上传的数据：", values);
-          return Promise.resolve({ code: 0, msg: "success" });
+        let url = "/software/uploadSoftware";
+        let isUpdateSubmite = this.isUpdateSubmite;
+        let id = this.software_id;
+        let data = new FormData();
+        const { userInfo } = this.props;
+        const author = userInfo.username;
+        data.append("author", author);
+        Object.keys(values).forEach((item) => {
+          data.append(item, values[item]);
+        });
+        if (isUpdateSubmite) {
+          url = "/software/updateSoftware";
+          data.append("id", id);
         }
-        submit()
-          .then((res) => {
-            if (res.code === 0) {
-              message.success({
-                content: "上传成功",
-              });
-              this.setState({
-                isModalVisible: false,
-              });
-              this.uploaderRef.current.resetFields();
+        const config = {
+          method: "POST",
+          url,
+          data,
+        };
+        ajax(config).then((res) => {
+          if (res.code === 1) {
+            let content = "上传成功";
+            if (isUpdateSubmite) {
+              content = "更新成功";
             }
-          })
-          .catch((err) => {
-            message.error({
-              content: `上传失败，${err}`,
+            message.success({
+              content,
             });
-          });
+            _this.setState({
+              isModalVisible: false,
+            });
+            _this.isUpdateSubmite = false;
+            _this.uploaderRef.current.resetFields();
+            _this.requestList();
+          } else {
+            notification.error({
+              message: "上传失败",
+              description: `${res.msg}`,
+            });
+          }
+        });
       })
       .catch((err) => {});
   };
@@ -101,12 +162,12 @@ export default class SoftwareAdmin extends Component {
         let text = "未知";
         let color = "magenta";
         switch (type) {
-          case 0: {
+          case 1: {
             text = "游戏";
             color = "magenta";
             break;
           }
-          case 1: {
+          case 2: {
             text = "软件";
             color = "cyan";
             break;
@@ -128,7 +189,7 @@ export default class SoftwareAdmin extends Component {
               href="./"
               onClick={(e) => {
                 e.preventDefault();
-                this.setState({ isModalVisible: true });
+                this.onUpdate(record);
               }}
             >
               更新信息
@@ -157,6 +218,7 @@ export default class SoftwareAdmin extends Component {
           type="primary"
           style={{ margin: "2rem 0" }}
           onClick={() => {
+            this.isUpdateSubmite = false;
             this.setState({ isModalVisible: true });
           }}
         >
@@ -168,7 +230,9 @@ export default class SoftwareAdmin extends Component {
         <Modal
           visible={this.state.isModalVisible}
           onCancel={() => {
+            this.isUpdateSubmite = false;
             this.setState({ isModalVisible: false });
+            this.uploaderRef.current.resetFields();
           }}
           title="上传软件"
           okText="完成"
@@ -182,3 +246,11 @@ export default class SoftwareAdmin extends Component {
     );
   }
 }
+
+const stateToProps = (state) => {
+  return {
+    userInfo: state.signChangeReducer.userInfo,
+  };
+};
+
+export default connect(stateToProps)(SoftwareAdmin);

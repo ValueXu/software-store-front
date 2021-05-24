@@ -1,48 +1,8 @@
-import { message, Popconfirm, Space, Table, Tag } from "antd";
+import { message, notification, Popconfirm, Space, Table, Tag } from "antd";
 import React, { Component } from "react";
+import { ajax } from "../../ajax/myAxios";
 
 import "./UserAdmin.less";
-
-const result = {
-  list: [
-    {
-      username: "valuexu",
-      name: "xx",
-      email: "valuexu@outlook.com",
-      type: "1",
-    },
-    {
-      username: "fackbook",
-      name: "脸书",
-      email: "xxx@xxx.com",
-      type: "2",
-    },
-    {
-      username: "alibaba",
-      name: "阿里巴巴",
-      email: "xxx@xxx.com",
-      type: "2",
-    },
-    {
-      username: "gifp",
-      name: "鹏哥",
-      email: "xxx@xxx.com",
-      type: "1",
-    },
-    {
-      username: "bai",
-      name: "秋月之白",
-      email: "xxx@xxx.com",
-      type: "1",
-    },
-    {
-      username: "backrunner",
-      name: "逆行者",
-      email: "xxx@xxx.com",
-      type: "1",
-    },
-  ],
-};
 
 export default class UserAdmin extends Component {
   state = {
@@ -85,18 +45,23 @@ export default class UserAdmin extends Component {
         let color = "";
         switch (type) {
           case 1: {
-            text = "普通用户";
+            text = "游客";
             color = "green";
             break;
           }
           case 2: {
-            text = "开发者";
+            text = "管理员";
             color = "blue";
             break;
           }
           case 3: {
-            text = "管理员";
+            text = "普通用户";
             color = "gold";
+            break;
+          }
+          case 4: {
+            text = "开发者";
+            color = "pink";
             break;
           }
           default: {
@@ -120,14 +85,16 @@ export default class UserAdmin extends Component {
               okText="确认"
               cancelText="取消"
             >
-              <a
-                href="./"
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
-              >
-                删除
-              </a>
+              {record.type - 2 > 0 ? (
+                <a
+                  href="./"
+                  onClick={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  删除
+                </a>
+              ) : null}
             </Popconfirm>
           </Space>
         );
@@ -137,20 +104,49 @@ export default class UserAdmin extends Component {
 
   requestList = () => {
     let datasource = [];
-    for (let i = 0; i < result.list.length; i++) {
-      let item = result.list[i];
-      if (parseInt(item) !== 0) {
-        datasource.push({ ...item, key: i, type: parseInt(item.type) });
-      }
-    }
 
-    this.setState({
-      datasource,
+    const config = {
+      method: "GET",
+      url: "/user/getAll",
+    };
+    ajax(config).then((res) => {
+      if (res.code === 1) {
+        for (let i = 0; i < res.result.length; i++) {
+          let item = res.result[i];
+          if (parseInt(item) !== 0) {
+            datasource.push({ ...item, key: i, type: parseInt(item.type) });
+          }
+        }
+        this.setState({
+          datasource,
+        });
+      } else {
+        notification.error({
+          message: "错误",
+          description: `${res.msg}`,
+        });
+      }
     });
   };
-  handleDelete = (id) => {
-    console.log(id);
-    message.success({ content: "删除成功" });
+  handleDelete = (username) => {
+    const data = new FormData();
+    data.append("username", username);
+    const config = {
+      method: "POST",
+      url: "user/delete",
+      data,
+    };
+    ajax(config).then((res) => {
+      if (res.code === 1) {
+        message.success({ content: "删除成功" });
+        this.requestList();
+      } else {
+        notification.error({
+          message: "删除失败",
+          description: `${res.msg}`,
+        });
+      }
+    });
   };
   render() {
     return (

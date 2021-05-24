@@ -16,47 +16,20 @@ import { connect } from "react-redux";
 import Games from "./pages/softwares/games/Games";
 import Softwares from "./pages/softwares/softwares/Softwares";
 import Others from "./pages/softwares/others/Others";
-import DownloadRecords from "./pages/download_records/DownloadRecords";
-import Scored from "./pages/user/scored/Scored";
-import UserMessage from "./pages/user/message/UserMessage";
-import SoftwareAdmin from "./pages/software-admin/SoftwareAdmin";
-import UserAdmin from "./pages/userAdmin/UserAdmin";
 // import App from "./App";
 
-class MyRouter extends React.Component {
-  routesConfig = [
-    {
-      type: 0,
-      paths: [
-        {
-          path: "/downloadRecords",
-          component: DownloadRecords,
-        },
-        {
-          path: "/softwareAdmin",
-          component: SoftwareAdmin,
-        },
-        {
-          path: "/userAdmin",
-          component: UserAdmin,
-        },
-        {
-          path: "/userCenter/message",
-          component: UserMessage,
-        },
-        {
-          path: "/userCenter/scored",
-          component: Scored,
-        },
-      ],
-    },
-  ];
+import "./styles/common.less";
+import Detail from "./pages/softwares/detail/Detail";
 
+import { routesConfig } from "./configs/permissionConfig";
+import { signIn } from "./redux/action/signActions";
+
+class MyRouter extends React.Component {
   renderSplitedRoute = (type) => {
     let paths = [];
-    for (let i = 0; i < this.routesConfig.length; i++) {
-      if (this.routesConfig[i].type === type) {
-        paths = this.routesConfig[i].paths;
+    for (let i = 0; i < routesConfig.length; i++) {
+      if (routesConfig[i].type === type) {
+        paths = routesConfig[i].paths;
         break;
       }
     }
@@ -72,6 +45,14 @@ class MyRouter extends React.Component {
     });
     return routes;
   };
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    const userInfo = localStorage.getItem("userInfo");
+    if (userInfo) {
+      dispatch(signIn(JSON.parse(userInfo)));
+    }
+  }
 
   render() {
     return (
@@ -112,6 +93,7 @@ class MyRouter extends React.Component {
                           component={Others}
                         ></Route>
                       </Route>
+                      <Route exact path="/detail/:id" component={Detail} />
                       {this.renderSplitedRoute(this.props.userInfo.type)}
                       <NoMatch />
                     </Switch>

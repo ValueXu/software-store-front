@@ -1,6 +1,16 @@
-# Getting Started with Create React App
+# software-store-front
+
+基于关联规则挖掘的软件下载平台-WebUI
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## 后端依赖
+
+[基于关联规则挖掘的软件下载平台](https://github.com/ValueXu/softwarestore-server)
+
+## 技术栈
+
+`React` `React-Route` `React-Virtualized` `React-Redux` `Axios` `Ant-Design`
 
 ## Available Scripts
 
